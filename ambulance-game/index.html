@@ -648,7 +648,7 @@
         targetCount + 'だい みつけたよ！ ' + '⭐'.repeat(Math.min(targetCount, 5));
 
       // 声でも褒める
-      speakChildVoice(msg.voice);
+      speakChildVoice('いつきくん、' + msg.voice);
 
       document.getElementById('clear-message').classList.add('show');
     }
@@ -659,7 +659,7 @@
       document.getElementById('goal-stars').textContent = '⭐'.repeat(Math.min(score, 20)) + ' ' + score + 'てん';
       document.getElementById('goal-msg').textContent = 'ぜんぶ クリアしたよ！すごいね！';
       document.getElementById('goal-screen').classList.add('show');
-      speakChildVoice('ゴール！ぜんぶ クリアしたよ！すごいね！');
+      speakChildVoice('いつきくん、ゴール！すごいね！');
 
       // 紙吹雪エフェクト
       launchConfetti();
