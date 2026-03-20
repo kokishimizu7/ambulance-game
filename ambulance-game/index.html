@@ -449,10 +449,10 @@
     // 声で「きゅうきゅうしゃ！」と読み上げ
     let jaVoice = null;
 
-    function speakChildVoice() {
+    function speakChildVoice(text) {
       try {
         if (!('speechSynthesis' in window)) return;
-        const utter = new SpeechSynthesisUtterance('きゅうきゅうしゃ！');
+        const utter = new SpeechSynthesisUtterance(text || 'きゅうきゅうしゃ！');
         utter.lang = 'ja-JP';
         utter.pitch = 1.8;
         utter.rate = 1.2;
@@ -635,10 +635,20 @@
         return;
       }
 
-      const messages = ['🎉 すごい！', '👏 やったね！', '🌟 かっこいい！', '🚑 さすが！', '✨ てんさい！'];
-      document.getElementById('clear-text').textContent = messages[Math.floor(Math.random() * messages.length)];
+      const messages = [
+        { text: '🎉 すごい！', voice: 'すごい！' },
+        { text: '👏 やったね！', voice: 'やったね！' },
+        { text: '🌟 かっこいい！', voice: 'かっこいい！' },
+        { text: '🚑 さすが！', voice: 'さすが！' },
+        { text: '✨ てんさい！', voice: 'てんさい！' }
+      ];
+      const msg = messages[Math.floor(Math.random() * messages.length)];
+      document.getElementById('clear-text').textContent = msg.text;
       document.getElementById('clear-sub').textContent =
         targetCount + 'だい みつけたよ！ ' + '⭐'.repeat(Math.min(targetCount, 5));
+
+      // 声でも褒める
+      speakChildVoice(msg.voice + ' ' + targetCount + 'だい みつけたよ！');
 
       document.getElementById('clear-message').classList.add('show');
     }
@@ -649,6 +659,7 @@
       document.getElementById('goal-stars').textContent = '⭐'.repeat(Math.min(score, 20)) + ' ' + score + 'てん';
       document.getElementById('goal-msg').textContent = 'ぜんぶ クリアしたよ！すごいね！';
       document.getElementById('goal-screen').classList.add('show');
+      speakChildVoice('ゴール！ぜんぶ クリアしたよ！すごいね！');
 
       // 紙吹雪エフェクト
       launchConfetti();
