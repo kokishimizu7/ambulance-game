@@ -648,7 +648,7 @@
         targetCount + 'だい みつけたよ！ ' + '⭐'.repeat(Math.min(targetCount, 5));
 
       // 声でも褒める
-      speakChildVoice(msg.voice + ' ' + targetCount + 'だい みつけたよ！');
+      speakChildVoice(msg.voice);
 
       document.getElementById('clear-message').classList.add('show');
     }
