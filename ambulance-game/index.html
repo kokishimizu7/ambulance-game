@@ -51,10 +51,12 @@
 
     #question {
       position: fixed;
-      top: 70px;
+      top: 64px;
       left: 50%;
       transform: translateX(-50%);
       z-index: 100;
+      width: 80%;
+      max-width: 400px;
       background: #FFF9C4;
       border: 3px solid #FBC02D;
       border-radius: 20px;
@@ -214,12 +216,11 @@
     /* 進捗バー */
     #progress-bar {
       position: fixed;
-      top: 60px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 99;
+      top: 56px;
+      right: 24px;
+      z-index: 101;
       display: flex;
-      gap: 8px;
+      gap: 6px;
     }
 
     .progress-dot {
@@ -303,10 +304,7 @@
   <div id="game-area">
     <div id="header">
       <h1>🚑 きゅうきゅうしゃゲーム</h1>
-      <div>
-        <span id="level-display">レベル 1</span>
-        <span id="score-display">⭐ 0</span>
-      </div>
+      <span id="score-display">⭐ 0</span>
     </div>
 
     <div id="question">きゅうきゅうしゃを <span id="target-count">0</span> だい タッチしよう！</div>
@@ -413,7 +411,7 @@
     function getRandomPositions(count, sizeW, sizeH) {
       const positions = [];
       const padding = 20;
-      const headerHeight = 140;
+      const headerHeight = 220;
       const maxW = window.innerWidth - sizeW - padding;
       const maxH = window.innerHeight - sizeH - padding;
       let attempts = 0;
