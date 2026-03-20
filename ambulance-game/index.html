@@ -446,55 +446,35 @@
       }
     }
 
-    // 子供っぽい声で「きゅうきゅうしゃ！」と読み上げ
-    const voiceMessages = ['きゅうきゅうしゃ！', 'みつけた！', 'ピーポーピーポー！', 'はっけん！'];
-    let voiceIndex = 0;
+    // 声で「きゅうきゅうしゃ！」と読み上げ
+    let jaVoice = null;
 
-    function speakChildVoice(text) {
+    function speakChildVoice() {
       try {
         if (!('speechSynthesis' in window)) return;
-        // 前の発話が残っていたらキャンセル
-        speechSynthesis.cancel();
-        const utter = new SpeechSynthesisUtterance(text);
+        const utter = new SpeechSynthesisUtterance('きゅうきゅうしゃ！');
         utter.lang = 'ja-JP';
-        utter.pitch = 1.8;   // 高いピッチ → 子供っぽく
-        utter.rate = 1.1;    // 少し速め → 元気な感じ
+        utter.pitch = 1.8;
+        utter.rate = 1.2;
         utter.volume = 1.0;
-        // 日本語の声を探す
-        const voices = speechSynthesis.getVoices();
-        const jaVoice = voices.find(v => v.lang.startsWith('ja'));
         if (jaVoice) utter.voice = jaVoice;
         speechSynthesis.speak(utter);
       } catch (e) {}
     }
 
     // 声を事前に読み込み（iPadで必要）
+    function loadVoices() {
+      const voices = speechSynthesis.getVoices();
+      jaVoice = voices.find(v => v.lang === 'ja-JP') || voices.find(v => v.lang.startsWith('ja'));
+    }
     if ('speechSynthesis' in window) {
-      speechSynthesis.getVoices();
-      window.speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices();
+      loadVoices();
+      speechSynthesis.onvoiceschanged = loadVoices;
     }
 
-    // サイレン音 + 声
+    // タップ時の音声
     function playSiren() {
-      // サイレン音
-      try {
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.frequency.setValueAtTime(800, ctx.currentTime);
-        osc.frequency.linearRampToValueAtTime(1200, ctx.currentTime + 0.15);
-        osc.frequency.linearRampToValueAtTime(800, ctx.currentTime + 0.3);
-        gain.gain.setValueAtTime(0.12, ctx.currentTime);
-        gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.3);
-        osc.start();
-        osc.stop(ctx.currentTime + 0.3);
-      } catch (e) {}
-      // 声で読み上げ
-      const msg = voiceMessages[voiceIndex % voiceMessages.length];
-      voiceIndex++;
-      speakChildVoice(msg);
+      speakChildVoice();
     }
 
     // クリア音
