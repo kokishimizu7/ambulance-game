@@ -454,18 +454,23 @@
         if (!('speechSynthesis' in window)) return;
         const utter = new SpeechSynthesisUtterance(text || 'きゅうきゅうしゃ！');
         utter.lang = 'ja-JP';
-        utter.pitch = 1.8;
-        utter.rate = 1.2;
+        utter.pitch = 1.3;
+        utter.rate = 1.05;
         utter.volume = 1.0;
         if (jaVoice) utter.voice = jaVoice;
         speechSynthesis.speak(utter);
       } catch (e) {}
     }
 
-    // 声を事前に読み込み（iPadで必要）
+    // 声を事前に読み込み（iPadで高品質ボイスを優先）
     function loadVoices() {
       const voices = speechSynthesis.getVoices();
-      jaVoice = voices.find(v => v.lang === 'ja-JP') || voices.find(v => v.lang.startsWith('ja'));
+      // iPad/iOSの高品質ボイスを優先（Enhanced/Premium版）
+      jaVoice = voices.find(v => v.lang.startsWith('ja') && v.name.includes('Enhanced'))
+             || voices.find(v => v.lang.startsWith('ja') && v.name.includes('Premium'))
+             || voices.find(v => v.lang === 'ja-JP' && v.localService)
+             || voices.find(v => v.lang === 'ja-JP')
+             || voices.find(v => v.lang.startsWith('ja'));
     }
     if ('speechSynthesis' in window) {
       loadVoices();
