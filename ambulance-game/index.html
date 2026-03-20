@@ -410,8 +410,8 @@
     // ランダム位置を重なりなしで生成
     function getRandomPositions(count, sizeW, sizeH) {
       const positions = [];
-      const padding = 20;
-      const headerHeight = 220;
+      const padding = 10;
+      const headerHeight = Math.min(220, window.innerHeight * 0.25);
       const maxW = window.innerWidth - sizeW - padding;
       const maxH = window.innerHeight - sizeH - padding;
       let attempts = 0;
@@ -566,7 +566,9 @@
       targetCount = Math.min(level + 1, 8);
       const decoyCount = Math.max(0, Math.floor(level / 2));
       const totalCount = targetCount + decoyCount;
-      const size = Math.max(100, 140 - level * 5);
+      // 画面幅に合わせてサイズ調整
+      const baseSize = Math.min(140, window.innerWidth * 0.25);
+      const size = Math.max(70, baseSize - level * 5);
 
       document.getElementById('target-count').textContent = targetCount;
       document.getElementById('level-display').textContent = 'レベル ' + level;
